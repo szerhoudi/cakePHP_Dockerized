@@ -1,0 +1,21 @@
+version: '2'
+services:
+  docker-mysql:
+    image: mysql
+    container_name: docker-mysql
+    ports: 
+      - "3306:3306"
+    volumes:
+      - ~/Prodsites/mydiveo.dev/mydiveo/mysql/datadir:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: bananas
+  web:
+    build: .
+    ports:
+      - "8090:80"
+    volumes:
+      - ~/Prodsites/mydiveo.dev/mydiveo:/var/www/html
+      - ~/Prodsites/mydiveo.dev/mydiveo/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    external_links:
+      - docker-mysql:db
+    network_mode: bridge
